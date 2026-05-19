@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>InsightAI – Research Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>InsightAI</h1>
+                    <p class="subtitle">Research Assistant</p>
+                </div>
+            </div>
+            <div class="status-dot" id="statusDot" title="Backend status"></div>
+        </div>
+
+        <!-- Tip Banner -->
+        <div class="tip-banner">
+            <span class="tip-icon">💡</span>
+            <span id="tipText">Select text on any page, then click an action below</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button class="action-btn" id="summarizeBtn">
+                <div class="btn-icon">📝</div>
+                <div class="btn-text">
+                    <span class="btn-label">Summarize</span>
+                    <span class="btn-desc">Condense selected text</span>
+                </div>
+            </button>
+            <button class="action-btn" id="suggestBtn">
+                <div class="btn-icon">🔍</div>
+                <div class="btn-text">
+                    <span class="btn-label">Suggest Topics</span>
+                    <span class="btn-desc">Find related content</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state hidden">
+            <div class="spinner"></div>
+            <span>Analyzing with AI...</span>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state hidden">
+            <span class="error-icon">⚠️</span>
+            <span id="errorText"></span>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="results hidden">
+            <div class="result-header">
+                <span id="resultLabel" class="result-label"></span>
+                <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div id="resultContent" class="result-content"></div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+            <span>Research Notes</span>
+        </div>
+
+        <!-- Notes -->
+        <div class="notes-section">
+            <textarea id="notes" placeholder="Jot down your research notes here..."></textarea>
+            <div class="notes-footer">
+                <span id="charCount" class="char-count">0 characters</span>
+                <button id="saveNotesBtn" class="save-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save Notes
+                </button>
+            </div>
+            <div id="saveStatus" class="save-toast hidden">
+                <span>✅ Notes saved successfully!</span>
+            </div>
+        </div>
+
+    </div>
+    <script src="sidepanel.js"></script>
+</body>
+</html>
