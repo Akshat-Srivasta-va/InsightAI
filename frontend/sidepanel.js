@@ -1,3 +1,9 @@
+// =============================================
+// 🔧 CHANGE THIS URL AFTER DEPLOYING TO RENDER
+// Example: 'https://insightai-backend.onrender.com'
+// =============================================
+const BACKEND_URL = 'http://localhost:8080';
+
 const tips = [
     "Select text on any page, then click an action below",
     "Use Summarize to condense long articles instantly",
@@ -35,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function checkBackendStatus() {
     const dot = document.getElementById('statusDot');
     try {
-        const res = await fetch('http://localhost:8080/api/research/process', {
+        const res = await fetch(`${BACKEND_URL}/api/research/process`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: 'test', operation: 'summarize' }),
@@ -91,7 +97,7 @@ async function processText(operation) {
         // Disable buttons during request
         setBtnsLoading(true);
 
-        const response = await fetch('http://localhost:8080/api/research/process', {
+        const response = await fetch(`${BACKEND_URL}/api/research/process`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: result, operation })
