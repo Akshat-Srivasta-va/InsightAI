@@ -19,7 +19,7 @@
         "service_worker": "background.js"
     },
     "host_permissions": [
-        "http://localhost:8080/*",
+        "https://insightai-d5rr.onrender.com/*",
         "<all_urls>"
     ],
     "content_security_policy": {
