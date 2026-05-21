@@ -1,8 +1,23 @@
 // =============================================
-// 🔧 CHANGE THIS URL AFTER DEPLOYING TO RENDER
-// Example: 'https://insightai-backend.onrender.com'
+// 🔧 Backend URLs — tries local first, falls back to Render
 // =============================================
-const BACKEND_URL = 'https://insightai-d5rr.onrender.com';
+const LOCAL_URL = 'http://localhost:8080';
+const RENDER_URL = 'https://insightai-d5rr.onrender.com';
+
+// Auto-detect: returns LOCAL if running, else RENDER
+async function getBackendUrl() {
+    try {
+        await fetch(`${LOCAL_URL}/api/research/process`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: 'ping', operation: 'summarize' }),
+            signal: AbortSignal.timeout(2000)
+        });
+        return LOCAL_URL; // localhost is running
+    } catch {
+        return RENDER_URL; // fall back to Render
+    }
+}
 
 const tips = [
     "Select text on any page, then click an action below",
@@ -41,15 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
 async function checkBackendStatus() {
     const dot = document.getElementById('statusDot');
     try {
-        const res = await fetch(`${BACKEND_URL}/api/research/process`, {
+        const url = await getBackendUrl();
+        const res = await fetch(`${url}/api/research/process`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: 'test', operation: 'summarize' }),
-            signal: AbortSignal.timeout(3000)
+            signal: AbortSignal.timeout(5000)
         });
         // Any response (even error) means backend is up
         dot.classList.add('online');
-        dot.title = 'Backend is running';
+        dot.title = url === LOCAL_URL ? 'Connected to local backend' : 'Connected to Render backend';
     } catch {
         dot.classList.add('offline');
         dot.title = 'Backend is not reachable';
@@ -97,7 +113,8 @@ async function processText(operation) {
         // Disable buttons during request
         setBtnsLoading(true);
 
-        const response = await fetch(`${BACKEND_URL}/api/research/process`, {
+        const backendUrl = await getBackendUrl();
+        const response = await fetch(`${backendUrl}/api/research/process`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: result, operation })
@@ -113,7 +130,7 @@ async function processText(operation) {
         showResult(text, operation);
 
     } catch (error) {
-        showError('Could not connect to backend. Make sure Spring Boot is running on port 8080.');
+        showError('Could not connect to backend. Both localhost and Render are unreachable.');
     } finally {
         showLoading(false);
         setBtnsLoading(false);
